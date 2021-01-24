@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-class Object {
+class InitObject {
     constructor(data) {
     }
 }
-exports.default = Object;
+exports.default = InitObject;

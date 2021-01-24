@@ -1,9 +1,9 @@
 import InitializerList from './InitializerList';
 import Property from './Property';
-import Object from './Object';
+import InitObject from './InitObject';
 
 export {
     InitializerList,
     Property,
-    Object
+    InitObject
 };
