@@ -101,7 +101,13 @@ function InitializerList(mapping : Mapping = {})
                 }
             }
         };
+
+        // copy static variables
+        Object.assign(ExtClass, Target);
+
+        // assign name
         Object.defineProperty (ExtClass, 'name', { value: Target.name });
+        
         return <any> ExtClass;
     };
 }

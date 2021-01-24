@@ -29,15 +29,6 @@ type MethodValidationErrors = {
     [field : string] : PropertyValidationErrors
 };
 
-type PropertyValidationErrors = {
-    rule : string,
-    options? : any[],
-}[];
-
-type MethodValidationErrors = {
-    [field : string] : PropertyValidationErrors
-};
-
 
 ValidateJsExt.formatters.intiv = function(errors : any[]) {
     let result : MethodValidationErrors = {};

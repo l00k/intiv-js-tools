@@ -1,4 +1,3 @@
-import 'reflect-metadata';
 import ObjectManager from '../ObjectManager';
 
 
@@ -18,10 +17,16 @@ function DependencyInjection()
             constructor(...ctorArgs : any[])
             {
                 super(...ctorArgs);
-                ObjectManager.loadDependencies(this, Target, ctorArgs);
+                ObjectManager.loadDependencies(this, Target.prototype);
             }
         };
+        
+        // copy static variables
+        Object.assign(ExtClass, Target);
+        
+        // assign name
         Object.defineProperty(ExtClass, 'name', { value: Target.name });
+        
         return <any> ExtClass;
     };
 }

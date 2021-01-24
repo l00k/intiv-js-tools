@@ -1,20 +1,20 @@
-const InjectSymbol = Symbol('Inject');
+import ConstructorType from './ConstructorType'
+
 const SingletonSymbol = Symbol('Singleton');
 
 class InjectionDescription
 {
 
     public constructor(
-        public type : string,
+        public type : ConstructorType<any>,
         public name? : string,
-        public args? : any[],
+        public ctorArgs? : any[],
     ) {
     }
 
 }
 
 export {
-    InjectSymbol,
     SingletonSymbol,
     InjectionDescription,
 };

@@ -22,10 +22,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Singleton = exports.DependencyInjection = exports.Inject = exports.ServiceWrapper = exports.Release = exports.ObjectManager = void 0;
+exports.Singleton = exports.DependencyInjection = exports.Inject = exports.ServiceWrapper = exports.ReleaseSymbol = exports.ObjectManager = void 0;
 const ObjectManager_1 = __importStar(require("./ObjectManager"));
 exports.ObjectManager = ObjectManager_1.default;
-Object.defineProperty(exports, "Release", { enumerable: true, get: function () { return ObjectManager_1.Release; } });
+Object.defineProperty(exports, "ReleaseSymbol", { enumerable: true, get: function () { return ObjectManager_1.ReleaseSymbol; } });
 const ServiceWrapper_1 = __importDefault(require("./ServiceWrapper"));
 exports.ServiceWrapper = ServiceWrapper_1.default;
 const Inject_1 = __importDefault(require("./Annotations/Inject"));

@@ -1,4 +1,4 @@
-import { Release } from './ObjectManager';
+import { ReleaseSymbol } from './ObjectManager';
 
 
 export default abstract class ServiceWrapper<T>
@@ -8,6 +8,6 @@ export default abstract class ServiceWrapper<T>
         public service : T
     ) {}
 
-    public abstract [Release]();
+    public abstract [ReleaseSymbol]();
 
 }
