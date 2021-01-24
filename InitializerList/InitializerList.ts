@@ -107,8 +107,8 @@ function InitializerList(mapping : Mapping = {})
 
         // assign name
         Object.defineProperty (ExtClass, 'name', { value: Target.name });
-        
-        return <any> ExtClass;
+
+        return <typeof Target> ExtClass;
     };
 }
 
