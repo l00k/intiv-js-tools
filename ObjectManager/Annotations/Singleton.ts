@@ -1,5 +1,6 @@
 import { SingletonSymbol } from '../def';
 
+
 function Singleton()
 {
     return (Target : Function) => {

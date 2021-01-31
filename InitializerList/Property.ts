@@ -1,24 +1,18 @@
-import 'reflect-metadata';
-import PropertyDescriptor, { PropertyDescriptorOptions } from './PropertyDescriptor';
+import { PropertySymbol } from './def';
+import PropertyDescriptor from './PropertyDescriptor';
 
 
-export const PropertySymbol = Symbol('Property');
-
-function Property(options : PropertyDescriptorOptions = {})
+export default function Property(options : Partial<PropertyDescriptor> = {})
 {
-    return function(Target, property) {
-        const TargetProto = Target.constructor.prototype;
-
-        if (!TargetProto[PropertySymbol]) {
-            TargetProto[PropertySymbol] = {};
+    return function(Target : Object, property : string) {
+        if (!Target[PropertySymbol]) {
+            Target[PropertySymbol] = {};
         }
 
         if (!options.type && !options.preserveRaw) {
             options.type = Reflect.getMetadata('design:type', Target, property);
         }
 
-        TargetProto[PropertySymbol][property] = new PropertyDescriptor(options);
+        Target[PropertySymbol][property] = new PropertyDescriptor(options);
     };
 }
-
-export default Property;

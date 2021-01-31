@@ -6,9 +6,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const ObjectManager_1 = require("../ObjectManager");
 const EventBus_1 = __importDefault(require("./EventBus"));
 function On(eventName) {
-    return (target, method, descriptor) => {
+    return (Target, method, descriptor) => {
         let eventBus = ObjectManager_1.ObjectManager.getInstance(EventBus_1.default);
-        eventBus.on(eventName, target, method);
+        eventBus.on(eventName, Target, method);
     };
 }
 exports.default = On;

@@ -1,191 +1,135 @@
-import { ValidatorRulesSymbol, MethodValidationRules, PropertyValidationRules, ValidationErrors } from './def';
+import { isEmpty } from 'lodash-es';
 import { Exception } from '../Exception';
-import { empty, isObject } from '../Utility';
+import { ValidatorRulesSymbol, ValidatableObject, ValidatableFunction } from './def';
+import validateJsExt from './validateJsExt';
+import ValidationResult from './ValidationResult';
 
-import ValidateJsExt from './ValidateJsExt';
 
-
-class Validator
+export default class Validator
 {
 
-    /*
-     * Registration methods
-     */
-    public static registerMethodValidation(target : any, method : string, parameterIdx : number, isComplex : boolean, rules : {})
+    public static validateObject(object : ValidatableObject) : ValidationResult
     {
-        let targetProto = target.constructor.prototype;
+        const TargetProto = Object.getPrototypeOf(object);
 
-        if (!targetProto[ValidatorRulesSymbol]) {
-            targetProto[ValidatorRulesSymbol] = {
-                methods: {},
-                properties: {},
-            };
+        const result = new ValidationResult();
+
+        // no rules applied - return
+        if (isEmpty(TargetProto[ValidatorRulesSymbol])) {
+            return result;
         }
 
-        if (!targetProto[ValidatorRulesSymbol].methods[method]) {
-            targetProto[ValidatorRulesSymbol].methods[method] = {};
-        }
+        for (const property in TargetProto[ValidatorRulesSymbol]) {
+            const propertyRules = TargetProto[ValidatorRulesSymbol][property];
 
-        if (!targetProto[ValidatorRulesSymbol].methods[method][parameterIdx]) {
-            targetProto[ValidatorRulesSymbol].methods[method][parameterIdx] = { isComplex: false, rules: {} };
-        }
+            if (propertyRules.validateType) {
+                // validate property type
+                const Type = Reflect.getMetadata('design:type', TargetProto, property);
+                if (!this.validateType(object[property], Type)) {
+                    result.valid = false;
 
-        targetProto[ValidatorRulesSymbol].methods[method][parameterIdx].isComplex = isComplex;
+                    if (!result.properties[property]) {
+                        result.properties[property] = [];
+                    }
 
-        Object.assign(targetProto[ValidatorRulesSymbol].methods[method][parameterIdx].rules, rules);
-    }
-
-    public static registerPropertyValidation(target : any, property : string, validateType : any, rules : {})
-    {
-        let targetProto = target.constructor.prototype;
-
-        if (!targetProto[ValidatorRulesSymbol]) {
-            targetProto[ValidatorRulesSymbol] = {
-                methods: {},
-                properties: {},
-            };
-        }
-
-        if (!targetProto[ValidatorRulesSymbol].properties[property]) {
-            targetProto[ValidatorRulesSymbol].properties[property] = {
-                validateType: null,
-                rules: {},
-            };
-        }
-
-        targetProto[ValidatorRulesSymbol].properties[property].validateType = validateType;
-
-        Object.assign(targetProto[ValidatorRulesSymbol].properties[property].rules, rules);
-    }
-
-    /*
-     * Validation methods
-     */
-    public static validateParamTypes(parameters : any[], paramTypes : any[]) : ValidationErrors
-    {
-        let errors : ValidationErrors = {};
-
-        for (const parameterIdx in paramTypes) {
-            if (
-                !!paramTypes[parameterIdx]
-                && !this.validateType(parameters[parameterIdx], paramTypes[parameterIdx])
-            ) {
-                if (!errors[parameterIdx]) {
-                    errors['param:' + parameterIdx] = [];
+                    result.properties[property].push({
+                        rule: 'design:type'
+                    });
                 }
-
-                errors['param:' + parameterIdx].push({
-                    rule: 'd:paramType'
-                });
-            }
-        }
-
-        return errors;
-    }
-
-    public static validateReturnType(returnValue : any, returnType : any) : ValidationErrors
-    {
-        let errors : ValidationErrors = {};
-
-        if (
-            !!returnType
-            && !this.validateType(returnValue, returnType)
-        ) {
-            errors.__return = [
-                { rule: 'd:returnType' }
-            ];
-        }
-
-        return errors;
-    }
-
-    public static validateObject(target : any) : ValidationErrors
-    {
-        const targetProto = target.constructor.prototype;
-
-        let errors : ValidationErrors = {};
-
-        if (empty(() => targetProto[ValidatorRulesSymbol].properties)) {
-            return errors;
-        }
-
-        const validatorRules : PropertyValidationRules = targetProto[ValidatorRulesSymbol].properties;
-        for (const property in validatorRules) {
-            const propertyRules = validatorRules[property];
-
-            if (
-                propertyRules.validateType
-                && !this.validateType(target[property], propertyRules.validateType)
-            ) {
-                if (!errors[property]) {
-                    errors[property] = [];
-                }
-
-                errors[property].push({
-                    rule: 'd:type'
-                });
             }
 
-            if (!empty(() => propertyRules.rules)) {
-                let ValidateJsExtResult = ValidateJsExt({ field: target[property] }, { field: propertyRules.rules }, { format: 'intiv' });
-                if (!empty(() => ValidateJsExtResult)) {
-                    errors[property] = ValidateJsExtResult.field;
+            if (!isEmpty(propertyRules.rules)) {
+                // validate rules
+                const validateResult = validateJsExt(
+                    { field: object[property] },
+                    { field: propertyRules.rules },
+                    { format: 'intiv' }
+                );
+
+                if (!isEmpty(validateResult)) {
+                    result.properties[property] = validateResult.field;
+                }
+            }
+
+            // validate subojects
+            if (object[property] instanceof Object) {
+                result.subObjects[property] = this.validateObject(object[property]);
+                if (!result.subObjects[property].valid) {
+                    result.valid = false;
                 }
             }
         }
 
-        return errors;
+        return result;
     }
 
-    public static validateMethod(target : any, method : string, parameters : any[]) : ValidationErrors
+    public static validateMethod(
+        Target : Object,
+        method : string,
+        parameters : any[],
+        validateParamTypes : boolean = false
+    ) : ValidationResult
     {
-        const targetProto = target.constructor.prototype;
+        const TargetProto = Target.constructor.prototype;
+        const MethodProto = TargetProto[method];
 
-        let errors : ValidationErrors = {};
+        const result = new ValidationResult();
 
-        // object validation
+        // inner object validation
         for (const parameterIdx in parameters) {
             const value = parameters[parameterIdx];
 
-            if (!isObject(value)) {
-                continue;
-            }
-
-            let validateObjectResult = this.validateObject(value);
-            if (!empty(() => validateObjectResult)) {
-                for (let property in validateObjectResult) {
-                    errors['param:' + parameterIdx + ':' + property] = validateObjectResult[property];
+            if (value instanceof Object) {
+                const validateResult = this.validateObject(value);
+                if (!validateResult.valid) {
+                    result.subObjects[parameterIdx] = validateResult;
                 }
             }
+
         }
 
-        if (empty(() => targetProto[ValidatorRulesSymbol].methods[method])) {
-            return errors;
+        const validatorRules : ValidatableFunction = MethodProto[method];
+        if (isEmpty(validatorRules)) {
+            return result;
         }
 
         // specific rules
-        const validatorRules : MethodValidationRules = targetProto[ValidatorRulesSymbol].methods[method];
+        const ParamTypes = Reflect.getMetadata('design:paramtypes', TargetProto, method);
+
         for (const parameterIdx in validatorRules) {
             const isComplex = validatorRules[parameterIdx].isComplex;
             const parameterRules = validatorRules[parameterIdx].rules;
             const value = parameters[parameterIdx];
 
             let validateParameterResult = isComplex
-                ? ValidateJsExt(value, parameterRules, { format: 'intiv' })
-                : ValidateJsExt({ field: value }, { field: parameterRules }, { format: 'intiv' });
+                ? validateJsExt(value, parameterRules, { format: 'intiv' })
+                : validateJsExt({ field: value }, { field: parameterRules }, { format: 'intiv' });
 
-            if (!empty(() => validateParameterResult)) {
-                errors['param:' + parameterIdx] = isComplex
+            if (!isEmpty(validateParameterResult)) {
+                result.valid = false;
+
+                const raw = isComplex
                     ? validateParameterResult
                     : validateParameterResult.field;
+                result.parameters[parameterIdx].push(raw);
+            }
+
+            if (
+                validateParamTypes
+                && !!ParamTypes[parameterIdx]
+                && !this.validateType(parameters[parameterIdx], ParamTypes[parameterIdx])
+            ) {
+                result.valid = false;
+                result.parameters[parameterIdx].push({
+                    rule: 'design:paramType'
+                });
             }
         }
 
-        return errors;
+        return result;
     }
 
-
-    protected static validateType(value : any, type : any)
+    public static validateType(value : any, type : any) : boolean
     {
         if (!type) {
             throw new Exception('Type has to be defined', 1573658489606);
@@ -214,6 +158,3 @@ class Validator
     }
 
 }
-
-
-export default Validator;

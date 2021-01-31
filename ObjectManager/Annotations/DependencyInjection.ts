@@ -20,13 +20,13 @@ function DependencyInjection()
                 ObjectManager.loadDependencies(this, Target.prototype);
             }
         };
-        
+
         // copy static variables
         Object.assign(ExtClass, Target);
-        
+
         // assign name
         Object.defineProperty(ExtClass, 'name', { value: Target.name });
-        
+
         return <any> ExtClass;
     };
 }

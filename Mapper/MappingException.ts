@@ -1,7 +1,7 @@
-import { Exception, ExceptionMetadata } from '../../Exception';
+import { Exception, ExceptionMetadata } from '../Exception';
 
 
-class MappingException
+export default class MappingException
     extends Exception
 {
 
@@ -12,6 +12,3 @@ class MappingException
     };
 
 }
-
-
-export default MappingException;

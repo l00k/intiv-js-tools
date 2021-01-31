@@ -1,7 +1,6 @@
+import ConstructorType from './ConstructorType';
 import { InjectionDescription, SingletonSymbol } from './def';
 import Storage from './Storage';
-import ConstructorType from './ConstructorType';
-import { isArrowFunction } from '../Utility';
 
 
 export const ObjectManagerSymbol = Symbol('ObjectManager');
@@ -9,11 +8,8 @@ export const ObjectManagerSymbol = Symbol('ObjectManager');
 // service release symbol
 export const ReleaseSymbol = Symbol('Release');
 
-
-
 declare const window;
 declare const global;
-
 
 export default class ObjectManager
 {
@@ -21,7 +17,7 @@ export default class ObjectManager
     /**
      * Global storage
      */
-    public static get storage(): Storage
+    public static get storage() : Storage
     {
         const globalScope = window !== undefined
             ? window
@@ -31,9 +27,8 @@ export default class ObjectManager
             globalScope[ObjectManagerSymbol] = new Storage();
         }
 
-        return globalScope[ObjectManagerSymbol]
+        return globalScope[ObjectManagerSymbol];
     }
-
 
     public static getInstance<T>(
         Klass : ConstructorType<T>,
@@ -93,7 +88,8 @@ export default class ObjectManager
         Target : ConstructorType<T>,
         propertyName : string,
         injectionDescription : InjectionDescription
-    ) {
+    )
+    {
         let targetInjections = this.storage.injections.get(Target);
         if (!targetInjections) {
             targetInjections = {};
@@ -106,7 +102,8 @@ export default class ObjectManager
     public static loadDependencies<T>(
         object : T,
         Type? : ConstructorType<T>
-    ) {
+    )
+    {
         const targetInjections = this.storage.injections.get(Type);
         if (!targetInjections) {
             return;

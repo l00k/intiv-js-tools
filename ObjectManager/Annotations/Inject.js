@@ -3,7 +3,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-require("reflect-metadata");
 const def_1 = require("../def");
 const ObjectManager_1 = __importDefault(require("../ObjectManager"));
 function Inject(name = null, args = []) {

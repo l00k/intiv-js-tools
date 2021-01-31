@@ -1,20 +1,12 @@
-const MapSymbol = Symbol('Mapping');
+export const MapSymbol = Symbol('Mapping');
 
-type ConstructorType = {
-    new(...args : any[]) : any
-};
+export type Constructor<T> = new (...args : any[]) => T;
 
-type MapOptions = {
-    targetClass? : ConstructorType,
+export type MapOptions = {
+    targetClass? : Constructor<any>,
     getterCallee? : Function,
     mappingFunction? : Function,
     config? : {
-        [name: string]: any
+        [name : string] : any
     }
-};
-
-
-export {
-    MapSymbol,
-    MapOptions,
 };

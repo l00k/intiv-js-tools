@@ -1,9 +1,9 @@
-import InitializerList from './InitializerList';
+import 'reflect-metadata';
+import Initializable from './Initializable';
 import Property from './Property';
-import InitObject from './InitObject';
+
 
 export {
-    InitializerList,
+    Initializable,
     Property,
-    InitObject
 };

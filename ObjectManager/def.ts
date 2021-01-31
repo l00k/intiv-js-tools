@@ -1,6 +1,8 @@
-import ConstructorType from './ConstructorType'
+import ConstructorType from './ConstructorType';
+
 
 const SingletonSymbol = Symbol('Singleton');
+
 
 class InjectionDescription
 {
@@ -9,10 +11,12 @@ class InjectionDescription
         public type : ConstructorType<any>,
         public name? : string,
         public ctorArgs? : any[],
-    ) {
+    )
+    {
     }
 
 }
+
 
 export {
     SingletonSymbol,

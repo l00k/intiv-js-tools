@@ -1,47 +1,32 @@
-const ValidatorRulesSymbol = Symbol('ValidatorRules');
+export const ValidatorRulesSymbol = Symbol('ValidatorRules');
 
-type FieldValidationErrors = {
+export type ValidationError = {
     rule : string,
     options? : any[],
-}[];
-
-type ValidationErrors = {
-    [field : string] : FieldValidationErrors
 };
 
-type ValidationRules = {
+export type ValidationRules = {
     [ruleName : number] : object
 };
 
-type PropertyValidationRules = {
-    [property : string] : {
-        validateType : any,
-        rules : ValidationRules
-    }
-};
+export class ValidatableObject extends Object
+{
 
-type MethodValidationRules = {
+    [ValidatorRulesSymbol]? : {
+        [property : string] : {
+            rules : ValidationRules,
+            validateType : boolean,
+        }
+    };
+
+}
+
+export class ValidatableFunction extends Function
+{
+
     [parameterIdx : number] : {
-        isComplex : boolean,
         rules : ValidationRules
+        isComplex : boolean,
     }
-};
 
-type ObjectValidatonRules = {
-    methods : {
-        [method : string] : MethodValidationRules
-    },
-    properties : {
-        [property : string] : ValidationRules
-    }
-};
-
-export {
-    ValidatorRulesSymbol,
-    FieldValidationErrors,
-    ValidationErrors,
-    ValidationRules,
-    PropertyValidationRules,
-    MethodValidationRules,
-    ObjectValidatonRules,
-};
+}

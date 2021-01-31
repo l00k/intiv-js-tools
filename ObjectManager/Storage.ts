@@ -6,10 +6,8 @@ type Services = {
     [name : string] : any
 };
 
-type Injections = Map<
-    ConstructorType<any>,
-    { [propertyName : string] : InjectionDescription }
->;
+type Injections = Map<ConstructorType<any>,
+    { [propertyName : string] : InjectionDescription }>;
 
 export default class Storage
 {

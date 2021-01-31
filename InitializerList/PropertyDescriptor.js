@@ -2,12 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 class PropertyDescriptor {
     constructor(options = {}) {
-        this.type = undefined;
-        this.arrayOf = undefined;
+        this.populate = true;
         this.preserveRaw = false;
-        this.isNullable = true;
         this.type = options.type ? options.type : this.type;
-        this.isNullable = options.isNullable ? !!options.isNullable : this.isNullable;
         this.arrayOf = options.arrayOf ? options.arrayOf : this.arrayOf;
     }
     get isPrimitive() {

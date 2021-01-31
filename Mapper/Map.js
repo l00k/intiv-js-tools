@@ -3,10 +3,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-require("reflect-metadata");
 const class_transformer_1 = require("class-transformer");
-const def_1 = require("../def");
-const MappingException_1 = __importDefault(require("../Exception/MappingException"));
+const def_1 = require("./def");
+const MappingException_1 = __importDefault(require("./MappingException"));
 function mapObject(plainValue, mapOptions) {
     try {
         return plainValue instanceof mapOptions.targetClass
@@ -18,21 +17,21 @@ function mapObject(plainValue, mapOptions) {
     }
 }
 function Map(options) {
-    return (target, method, parameterIdx) => {
-        const targetProto = target.constructor.prototype;
-        const methodProto = targetProto[method];
-        if (!methodProto[def_1.MapSymbol]) {
-            methodProto[def_1.MapSymbol] = {};
+    return (Target, method, parameterIdx) => {
+        const TargetProto = Target.constructor.prototype;
+        const MethodProto = TargetProto[method];
+        if (!MethodProto[def_1.MapSymbol]) {
+            MethodProto[def_1.MapSymbol] = {};
         }
         if (!options) {
             options = {};
         }
         options.mappingFunction = mapObject;
         if (!options.targetClass) {
-            const paramTypes = Reflect.getMetadata('design:paramtypes', target, method);
+            const paramTypes = Reflect.getMetadata('design:paramtypes', Target, method);
             options.targetClass = paramTypes[parameterIdx];
         }
-        methodProto[def_1.MapSymbol][parameterIdx] = options;
+        MethodProto[def_1.MapSymbol][parameterIdx] = options;
     };
 }
 exports.default = Map;

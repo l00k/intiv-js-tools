@@ -1,8 +1,6 @@
-import { empty }                    from '../Utility';
+import { isEmpty } from 'lodash-es';
 import { ObjectManager, Singleton } from '../ObjectManager';
-import { InitiationException }      from '../Exception';
-
-import Observer                     from './Observer';
+import Observer from './Observer';
 
 
 type Callback = (data : any, previousResult : any) => any;
@@ -10,6 +8,7 @@ type Callback = (data : any, previousResult : any) => any;
 type Listners = {
     [eventName : string] : Callback[]
 };
+
 
 @Singleton()
 class EventBus
@@ -19,16 +18,15 @@ class EventBus
 
     protected listeners : Listners = {};
 
-
     public on(eventName : string, observerClass : typeof Observer, method : string)
     {
-        if (empty(() => this.listeners[eventName])) {
+        if (isEmpty(this.listeners[eventName])) {
             this.listeners[eventName] = [];
         }
 
         let observer = this.observers.get(observerClass);
         if (!observer) {
-            observer = ObjectManager.getInstance(<any>observerClass.constructor);
+            observer = ObjectManager.getInstance(<any> observerClass.constructor);
             this.observers.set(observerClass, observer);
         }
 
@@ -37,7 +35,7 @@ class EventBus
 
     public async handle(eventName : string, data : any)
     {
-        if (empty(() => this.listeners[eventName])) {
+        if (isEmpty(this.listeners[eventName])) {
             return null;
         }
 

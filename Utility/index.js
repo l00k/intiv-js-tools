@@ -1,14 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.coalesce = exports.empty = exports.isset = exports.isArrowFunction = exports.isFunction = exports.isPlainObject = exports.isObject = exports.isArray = void 0;
-function isArray(v) {
-    return (!!v) && (v.constructor === Array);
-}
-exports.isArray = isArray;
-function isObject(v) {
-    return v === Object(v);
-}
-exports.isObject = isObject;
+exports.isArrowFunction = exports.isFunction = exports.isPlainObject = void 0;
 function isPlainObject(v) {
     return (!!v) && (v.constructor === Object);
 }
@@ -23,44 +15,3 @@ function isArrowFunction(v) {
     return isFunction(v) && !(native || plain);
 }
 exports.isArrowFunction = isArrowFunction;
-function isset(expr) {
-    try {
-        expr();
-        return typeof expr() != 'undefined' && expr() !== null;
-    }
-    catch (exception) {
-        return false;
-    }
-}
-exports.isset = isset;
-function empty(expr) {
-    try {
-        let v = expr();
-        if (isArray(v)) {
-            return !v.length;
-        }
-        if (isPlainObject(v)) {
-            return !Object.keys(v).length;
-        }
-        return !v;
-    }
-    catch (exception) {
-        return true;
-    }
-}
-exports.empty = empty;
-function coalesce(...exprs) {
-    let v;
-    let expr;
-    while (expr = exprs.shift()) {
-        try {
-            v = expr();
-            if (typeof expr() != 'undefined' && expr() !== null) {
-                return v;
-            }
-        }
-        catch (exception) { }
-    }
-    return null;
-}
-exports.coalesce = coalesce;

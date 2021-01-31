@@ -5,16 +5,11 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const Utility_1 = require("../Utility");
-const ObjectManager_1 = require("../ObjectManager");
 const Exception_1 = require("../Exception");
+const ObjectManager_1 = require("../ObjectManager");
 let Configuration = class Configuration {
     constructor() {
-        this.data = {};
         this.data = {};
     }
     createFlatData(path, tree) {
@@ -27,7 +22,7 @@ let Configuration = class Configuration {
         }
     }
     get(path, defaultValue) {
-        if (!Utility_1.isset(() => this.data[path])) {
+        if (!this.data[path]) {
             if (typeof defaultValue == 'undefined') {
                 throw new Exception_1.Exception(`Configuration [${path}] not found and default value not defined.`, 1572874195282);
             }
@@ -39,7 +34,6 @@ let Configuration = class Configuration {
     }
 };
 Configuration = __decorate([
-    ObjectManager_1.Singleton(),
-    __metadata("design:paramtypes", [])
+    ObjectManager_1.Singleton()
 ], Configuration);
 exports.default = Configuration;

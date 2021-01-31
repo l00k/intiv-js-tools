@@ -1,26 +1,24 @@
-import 'reflect-metadata';
-
-import { MapOptions, MapSymbol } from '../def';
+import { MapOptions, MapSymbol } from './def';
 
 
 function ApplyMapping()
 {
-    return (target : any, method : string, descriptor : any) => {
-        const targetProto = target.constructor.prototype;
-        const methodProto = targetProto[method];
+    return (Target : Object, method : string, descriptor : any) => {
+        const TargetProto = Target.constructor.prototype;
+        const MethodProto = TargetProto[method];
 
         // collect default mapping
-        const paramTypes = Reflect.getMetadata('design:paramtypes', target, method);
+        const paramTypes = Reflect.getMetadata('design:paramtypes', Target, method);
 
-        if (!methodProto[MapSymbol]) {
-            methodProto[MapSymbol] = {};
+        if (!MethodProto[MapSymbol]) {
+            MethodProto[MapSymbol] = {};
         }
 
         for (let parameterIdx in paramTypes) {
             const paramType = paramTypes[parameterIdx];
 
-            if (!methodProto[MapSymbol][parameterIdx]) {
-                methodProto[MapSymbol][parameterIdx] = {
+            if (!MethodProto[MapSymbol][parameterIdx]) {
+                MethodProto[MapSymbol][parameterIdx] = {
                     targetClass: paramType,
                 };
             }
@@ -32,13 +30,13 @@ function ApplyMapping()
         descriptor.value = async function(...params : any[]) {
             for (let parameterIdx in params) {
                 if (
-                    !methodProto[MapSymbol][parameterIdx]
+                    !MethodProto[MapSymbol][parameterIdx]
                     || !params[parameterIdx]
                 ) {
                     continue;
                 }
 
-                const paramMap : MapOptions = methodProto[MapSymbol][parameterIdx];
+                const paramMap : MapOptions = MethodProto[MapSymbol][parameterIdx];
 
                 // resolve getter
                 let plainValue = !!paramMap.getterCallee

@@ -1,9 +1,11 @@
-import MappingException from './Exception/MappingException';
-import ApplyMapping from './Annotations/ApplyMapping';
-import Map from './Annotations/Map';
+import 'reflect-metadata';
+import ApplyMapping from './ApplyMapping';
+import Map from './Map';
+import MappingException from './MappingException';
+
 
 export {
     MappingException,
     ApplyMapping,
     Map,
-}
+};

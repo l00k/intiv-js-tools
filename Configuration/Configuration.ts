@@ -1,18 +1,17 @@
-import { isset } from '../Utility';
-import { Singleton } from '../ObjectManager';
 import { Exception } from '../Exception';
+import { Singleton } from '../ObjectManager';
+
+
+type ConfigurationData = {
+    [path : string] : any,
+};
 
 
 @Singleton()
 class Configuration
 {
 
-    protected data : object = {};
-
-    constructor()
-    {
-        this.data = {};
-    }
+    protected data : ConfigurationData = {};
 
     protected createFlatData(path : string, tree : any)
     {
@@ -28,7 +27,7 @@ class Configuration
 
     public get<T>(path : string, defaultValue ? : any) : T
     {
-        if (!isset(() => this.data[path])) {
+        if (!this.data[path]) {
             if (typeof defaultValue == 'undefined') {
                 throw new Exception(`Configuration [${path}] not found and default value not defined.`, 1572874195282);
             }

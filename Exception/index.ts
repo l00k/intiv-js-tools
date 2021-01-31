@@ -2,6 +2,7 @@ export type ExceptionMetadata = {
     responseCode : number,
 };
 
+
 export class Throwable
     extends Error
 {
@@ -14,7 +15,7 @@ export class Throwable
         responseCode: 500 // general interal server error
     };
 
-    public constructor (message : string, code ? : number, error ? : Error)
+    public constructor(message : string, code ? : number, error ? : Error)
     {
         super(message);
         this.code = code || this.code;
@@ -24,12 +25,12 @@ export class Throwable
         }
     }
 
-    public toString ()
+    public toString()
     {
         return this.name + (this.code ? ' [' + this.code + ']' : '') + ': ' + this.message;
     }
 
-    protected initErrorMessage (message, error)
+    protected initErrorMessage(message, error)
     {
         if (typeof Error.captureStackTrace === 'function') {
             Error.captureStackTrace(this, this.constructor);
@@ -61,6 +62,7 @@ export class Exception
 
 }
 
+
 export class InitiationException
     extends Exception
 {
@@ -70,6 +72,7 @@ export class InitiationException
     public code : number = 1584918121810;
 
 }
+
 
 export class RuntimeException
     extends Exception
@@ -108,6 +111,7 @@ export type ValidationErrors = {
     [field : string] : FieldValidationErrors
 };
 
+
 export class ValidationException
     extends ErrorException
 {
@@ -118,7 +122,7 @@ export class ValidationException
 
     public details : ValidationErrors = {};
 
-    constructor (message : string, code ? : number, details ? : ValidationErrors)
+    constructor(message : string, code ? : number, details ? : ValidationErrors)
     {
         super(message, code);
         this.details = details || this.details;

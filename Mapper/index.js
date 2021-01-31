@@ -4,9 +4,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Map = exports.ApplyMapping = exports.MappingException = void 0;
-const MappingException_1 = __importDefault(require("./Exception/MappingException"));
-exports.MappingException = MappingException_1.default;
-const ApplyMapping_1 = __importDefault(require("./Annotations/ApplyMapping"));
+require("reflect-metadata");
+const ApplyMapping_1 = __importDefault(require("./ApplyMapping"));
 exports.ApplyMapping = ApplyMapping_1.default;
-const Map_1 = __importDefault(require("./Annotations/Map"));
+const Map_1 = __importDefault(require("./Map"));
 exports.Map = Map_1.default;
+const MappingException_1 = __importDefault(require("./MappingException"));
+exports.MappingException = MappingException_1.default;

@@ -1,12 +1,12 @@
-import 'reflect-metadata';
-
-import { InjectionDescription, SingletonSymbol } from '../def';
+import { InjectionDescription } from '../def';
 import ObjectManager from '../ObjectManager';
 
 
-function Inject(name : string = null, args : any[] = [])
+export type ConstructorType<T> = new (...args : any[]) => T;
+
+function Inject<T>(name : string = null, args : any[] = [])
 {
-    return (Target : any, propertyName : string) => {
+    return (Target : ConstructorType<T>, propertyName : string) => {
         const Type = Reflect.getMetadata('design:type', Target, propertyName);
         const description = new InjectionDescription(Type, name, args);
 

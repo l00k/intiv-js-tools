@@ -6,7 +6,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const Utility_1 = require("../Utility");
+const lodash_es_1 = require("lodash-es");
 const ObjectManager_1 = require("../ObjectManager");
 let EventBus = class EventBus {
     constructor() {
@@ -14,7 +14,7 @@ let EventBus = class EventBus {
         this.listeners = {};
     }
     on(eventName, observerClass, method) {
-        if (Utility_1.empty(() => this.listeners[eventName])) {
+        if (lodash_es_1.isEmpty(this.listeners[eventName])) {
             this.listeners[eventName] = [];
         }
         let observer = this.observers.get(observerClass);
@@ -25,7 +25,7 @@ let EventBus = class EventBus {
         this.listeners[eventName].push(observer[method].bind(observer));
     }
     async handle(eventName, data) {
-        if (Utility_1.empty(() => this.listeners[eventName])) {
+        if (lodash_es_1.isEmpty(this.listeners[eventName])) {
             return null;
         }
         let previousResult = null;
