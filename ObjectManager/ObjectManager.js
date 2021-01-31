@@ -55,10 +55,10 @@ class ObjectManager {
         return object;
     }
     static registerInjection(Target, propertyName, injectionDescription) {
-        let targetInjections = this.storage.injections.get(Target);
+        let targetInjections = this.storage.injections.get(Object);
         if (!targetInjections) {
             targetInjections = {};
-            this.storage.injections.set(Target, targetInjections);
+            this.storage.injections.set(Object, targetInjections);
         }
         targetInjections[propertyName] = injectionDescription;
     }

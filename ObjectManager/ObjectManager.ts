@@ -1,5 +1,4 @@
-import ConstructorType from './ConstructorType';
-import { InjectionDescription, SingletonSymbol } from './def';
+import { InjectionDescription, SingletonSymbol, ClassConstructor } from './def';
 import Storage from './Storage';
 
 
@@ -31,11 +30,11 @@ export default class ObjectManager
     }
 
     public static getInstance<T>(
-        Klass : ConstructorType<T>,
+        Klass : ClassConstructor<T>,
         ctorArgs : any[] = []
     ) : T
     {
-        if (Klass[SingletonSymbol]) {
+        if ((<any>Klass)[SingletonSymbol]) {
             if (!this.storage.instances[Klass.name]) {
                 this.storage.instances[Klass.name] = this.createInstance(Klass, ctorArgs);
             }
@@ -84,16 +83,16 @@ export default class ObjectManager
         return object;
     }
 
-    public static registerInjection<T>(
-        Target : ConstructorType<T>,
+    public static registerInjection(
+        Target : Object,
         propertyName : string,
         injectionDescription : InjectionDescription
     )
     {
-        let targetInjections = this.storage.injections.get(Target);
+        let targetInjections = this.storage.injections.get(Object);
         if (!targetInjections) {
             targetInjections = {};
-            this.storage.injections.set(Target, targetInjections);
+            this.storage.injections.set(Object, targetInjections);
         }
 
         targetInjections[propertyName] = injectionDescription;
@@ -101,7 +100,7 @@ export default class ObjectManager
 
     public static loadDependencies<T>(
         object : T,
-        Type? : ConstructorType<T>
+        Type? : ClassConstructor<T>
     )
     {
         const targetInjections = this.storage.injections.get(Type);

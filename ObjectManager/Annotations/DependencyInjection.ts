@@ -1,17 +1,10 @@
+import { ClassConstructor } from '../def';
 import ObjectManager from '../ObjectManager';
 
 
-interface ConstructorType extends Function
-{
-    new(...args : any[]) : any;
-
-    [name : string] : any
-}
-
-
-function DependencyInjection()
-{
-    return (Target : ConstructorType) => {
+export default function DependencyInjection<T>() {
+    return (Target : ClassConstructor<T>) => {
+        // @ts-ignore
         const ExtClass = class extends Target
         {
             constructor(...ctorArgs : any[])
@@ -30,6 +23,3 @@ function DependencyInjection()
         return <any> ExtClass;
     };
 }
-
-export default DependencyInjection;
-

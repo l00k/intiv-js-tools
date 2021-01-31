@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const ObjectManager_1 = __importDefault(require("../ObjectManager"));
 function DependencyInjection() {
     return (Target) => {
+        // @ts-ignore
         const ExtClass = class extends Target {
             constructor(...ctorArgs) {
                 super(...ctorArgs);

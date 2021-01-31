@@ -1,24 +1,19 @@
-import ConstructorType from './ConstructorType';
+export const SingletonSymbol = Symbol('Singleton');
+
+export type ClassConstructor<T> = {
+    new(...args : any[]) : T,
+    [index : string] : any,
+};
 
 
-const SingletonSymbol = Symbol('Singleton');
-
-
-class InjectionDescription
+export class InjectionDescription
 {
 
     public constructor(
-        public type : ConstructorType<any>,
+        public type : ClassConstructor<any>,
         public name? : string,
         public ctorArgs? : any[],
     )
     {
     }
-
 }
-
-
-export {
-    SingletonSymbol,
-    InjectionDescription,
-};

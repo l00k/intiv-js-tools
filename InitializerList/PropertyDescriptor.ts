@@ -1,15 +1,15 @@
 type ObjectType = Object & Function;
 
-export type ConstructorType<T = {}> = new (...args : any[]) => T;
+export type ClassConstructor<T = {}> = new (...args : any[]) => T;
 
 export default class PropertyDescriptor
 {
 
     public populate : boolean = true;
 
-    public type : ConstructorType;
+    public type : ClassConstructor;
 
-    public arrayOf : ConstructorType;
+    public arrayOf : ClassConstructor;
 
     public preserveRaw : boolean = false;
 

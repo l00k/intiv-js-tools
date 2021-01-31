@@ -1,5 +1,4 @@
 import { plainToClass } from 'class-transformer';
-import ConstructorType from '../ObjectManager/ConstructorType';
 import { MapOptions, MapSymbol } from './def';
 import MappingException from './MappingException';
 
@@ -18,7 +17,7 @@ function mapObject(plainValue : any, mapOptions : MapOptions)
 
 function Map<T>(options? : MapOptions)
 {
-    return (Target : ConstructorType<T>, method : string, parameterIdx : number) => {
+    return (Target : Object, method : string, parameterIdx : number) => {
         const TargetProto = Target.constructor.prototype;
         const MethodProto = TargetProto[method];
 

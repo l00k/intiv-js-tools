@@ -1,8 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.InjectionDescription = exports.SingletonSymbol = void 0;
-const SingletonSymbol = Symbol('Singleton');
-exports.SingletonSymbol = SingletonSymbol;
+exports.SingletonSymbol = Symbol('Singleton');
 class InjectionDescription {
     constructor(type, name, ctorArgs) {
         this.type = type;
