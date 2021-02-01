@@ -30,4 +30,4 @@ class ValidationResult
 
 }
 
-export default Initializable(ValidationResult);
+export default class extends Initializable(ValidationResult) {};

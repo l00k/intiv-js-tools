@@ -10,4 +10,7 @@ class ValidationResult {
         this.returnType = true;
     }
 }
-exports.default = Initializable_1.Initializable(ValidationResult);
+class default_1 extends Initializable_1.Initializable(ValidationResult) {
+}
+exports.default = default_1;
+;
