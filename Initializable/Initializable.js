@@ -78,6 +78,9 @@ function Initializable(Source) {
         });
     };
 
+    Object.assign(Extended, Source);
+    Object.defineProperty(Extended, 'name', { value: Source.name });
+
     return Extended;
 }
 exports.default = Initializable;
