@@ -97,35 +97,3 @@ export class ErrorException
     public code : number = 1584917646475;
 
 }
-
-
-/**
- * Validation error
- */
-export type FieldValidationErrors = {
-    rule : string,
-    options? : any[],
-}[];
-
-export type ValidationErrors = {
-    [field : string] : FieldValidationErrors
-};
-
-
-export class ValidationException
-    extends ErrorException
-{
-
-    public name : string = 'ValidationException';
-
-    public code : number = 1584917649257;
-
-    public details : ValidationErrors = {};
-
-    constructor(message : string, code ? : number, details ? : ValidationErrors)
-    {
-        super(message, code);
-        this.details = details || this.details;
-    }
-
-}
