@@ -1,10 +1,8 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const ValidationException_1 = __importDefault(require("../ValidationException"));
-const Validator_1 = __importDefault(require("../Validator"));
+const tslib_1 = require("tslib");
+const ValidationException_1 = tslib_1.__importDefault(require("../ValidationException"));
+const Validator_1 = tslib_1.__importDefault(require("../Validator"));
 function Validate(validateParamTypes = true, validateReturnType = false) {
     return (Target, method, descriptor) => {
         let originalMethod = descriptor.value;

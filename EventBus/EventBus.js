@@ -1,12 +1,7 @@
 "use strict";
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const lodash_es_1 = require("lodash-es");
+const tslib_1 = require("tslib");
+const lodash_1 = require("lodash");
 const ObjectManager_1 = require("../ObjectManager");
 let EventBus = class EventBus {
     constructor() {
@@ -14,7 +9,7 @@ let EventBus = class EventBus {
         this.listeners = {};
     }
     on(eventName, observerClass, method) {
-        if (lodash_es_1.isEmpty(this.listeners[eventName])) {
+        if (lodash_1.isEmpty(this.listeners[eventName])) {
             this.listeners[eventName] = [];
         }
         let observer = this.observers.get(observerClass);
@@ -25,7 +20,7 @@ let EventBus = class EventBus {
         this.listeners[eventName].push(observer[method].bind(observer));
     }
     async handle(eventName, data) {
-        if (lodash_es_1.isEmpty(this.listeners[eventName])) {
+        if (lodash_1.isEmpty(this.listeners[eventName])) {
             return null;
         }
         let previousResult = null;
@@ -36,7 +31,7 @@ let EventBus = class EventBus {
         return previousResult;
     }
 };
-EventBus = __decorate([
+EventBus = tslib_1.__decorate([
     ObjectManager_1.Singleton()
 ], EventBus);
 exports.default = EventBus;

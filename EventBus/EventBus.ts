@@ -1,4 +1,4 @@
-import { isEmpty } from 'lodash-es';
+import { isEmpty } from 'lodash';
 import { ObjectManager, Singleton } from '../ObjectManager';
 import Observer from './Observer';
 

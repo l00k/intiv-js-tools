@@ -1,11 +1,9 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
+const tslib_1 = require("tslib");
 const class_transformer_1 = require("class-transformer");
 const def_1 = require("./def");
-const MappingException_1 = __importDefault(require("./MappingException"));
+const MappingException_1 = tslib_1.__importDefault(require("./MappingException"));
 function mapObject(plainValue, mapOptions) {
     try {
         return plainValue instanceof mapOptions.targetClass

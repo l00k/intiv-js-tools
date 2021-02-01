@@ -1,11 +1,9 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ReleaseSymbol = exports.ObjectManagerSymbol = void 0;
+const tslib_1 = require("tslib");
 const def_1 = require("./def");
-const Storage_1 = __importDefault(require("./Storage"));
+const Storage_1 = tslib_1.__importDefault(require("./Storage"));
 exports.ObjectManagerSymbol = Symbol('ObjectManager');
 // service release symbol
 exports.ReleaseSymbol = Symbol('Release');
@@ -14,9 +12,9 @@ class ObjectManager {
      * Global storage
      */
     static get storage() {
-        const globalScope = window !== undefined
-            ? window
-            : global;
+        const globalScope = global !== undefined
+            ? global
+            : window;
         if (!globalScope[exports.ObjectManagerSymbol]) {
             globalScope[exports.ObjectManagerSymbol] = new Storage_1.default();
         }
@@ -55,10 +53,10 @@ class ObjectManager {
         return object;
     }
     static registerInjection(Target, propertyName, injectionDescription) {
-        let targetInjections = this.storage.injections.get(Object);
+        let targetInjections = this.storage.injections.get(Target);
         if (!targetInjections) {
             targetInjections = {};
-            this.storage.injections.set(Object, targetInjections);
+            this.storage.injections.set(Target, targetInjections);
         }
         targetInjections[propertyName] = injectionDescription;
     }

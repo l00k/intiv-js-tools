@@ -2,15 +2,19 @@
     "compilerOptions": {
         "target": "esnext",
         "module": "commonjs",
-        "resolveJsonModule": true,
+        "moduleResolution": "node",
+
+        "baseUrl": ".",
+        "importHelpers": true,
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
 
         "strict": true,
         "noImplicitAny": false,
+        "noImplicitThis": true,
+        "noImplicitReturns": true,
         "strictNullChecks": false,
         "strictPropertyInitialization": false,
-
-        "baseUrl": ".",
-        "esModuleInterop": true,
 
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true

@@ -6,8 +6,8 @@ type PropertyErrorMap = {
     [property : string] : ValidationError[]
 }
 
-type SubObjectsErrorMap = {
-    [subObject : string] : ValidationResult
+type ErrorMap<T> = {
+    [subObject : string] : T
 }
 
 type ParameterErrorMap = {
@@ -22,7 +22,7 @@ class ValidationResult
 
     public properties : PropertyErrorMap = {};
 
-    public subObjects : SubObjectsErrorMap = {};
+    public subObjects : ErrorMap<ValidationResult> = {};
 
     public parameters : ParameterErrorMap = {};
 

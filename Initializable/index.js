@@ -1,11 +1,9 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Property = exports.Initializable = void 0;
+const tslib_1 = require("tslib");
 require("reflect-metadata");
-const Initializable_1 = __importDefault(require("./Initializable"));
+const Initializable_1 = tslib_1.__importDefault(require("./Initializable"));
 exports.Initializable = Initializable_1.default;
-const Property_1 = __importDefault(require("./Property"));
+const Property_1 = tslib_1.__importDefault(require("./Property"));
 exports.Property = Property_1.default;

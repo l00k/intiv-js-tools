@@ -1,19 +1,17 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const lodash_es_1 = require("lodash-es");
+const tslib_1 = require("tslib");
+const lodash_1 = require("lodash");
 const Exception_1 = require("../Exception");
 const def_1 = require("./def");
-const validateJsExt_1 = __importDefault(require("./validateJsExt"));
-const ValidationResult_1 = __importDefault(require("./ValidationResult"));
+const validateJsExt_1 = tslib_1.__importDefault(require("./validateJsExt"));
+const ValidationResult_1 = tslib_1.__importDefault(require("./ValidationResult"));
 class Validator {
     static validateObject(object) {
         const TargetProto = Object.getPrototypeOf(object);
         const result = new ValidationResult_1.default();
         // no rules applied - return
-        if (lodash_es_1.isEmpty(TargetProto[def_1.ValidatorRulesSymbol])) {
+        if (lodash_1.isEmpty(TargetProto[def_1.ValidatorRulesSymbol])) {
             return result;
         }
         for (const property in TargetProto[def_1.ValidatorRulesSymbol]) {
@@ -31,10 +29,10 @@ class Validator {
                     });
                 }
             }
-            if (!lodash_es_1.isEmpty(propertyRules.rules)) {
+            if (!lodash_1.isEmpty(propertyRules.rules)) {
                 // validate rules
                 const validateResult = validateJsExt_1.default({ field: object[property] }, { field: propertyRules.rules }, { format: 'intiv' });
-                if (!lodash_es_1.isEmpty(validateResult)) {
+                if (!lodash_1.isEmpty(validateResult)) {
                     result.properties[property] = validateResult.field;
                 }
             }
@@ -63,7 +61,7 @@ class Validator {
             }
         }
         const validatorRules = MethodProto[method];
-        if (lodash_es_1.isEmpty(validatorRules)) {
+        if (lodash_1.isEmpty(validatorRules)) {
             return result;
         }
         // specific rules
@@ -75,7 +73,7 @@ class Validator {
             let validateParameterResult = isComplex
                 ? validateJsExt_1.default(value, parameterRules, { format: 'intiv' })
                 : validateJsExt_1.default({ field: value }, { field: parameterRules }, { format: 'intiv' });
-            if (!lodash_es_1.isEmpty(validateParameterResult)) {
+            if (!lodash_1.isEmpty(validateParameterResult)) {
                 result.valid = false;
                 const raw = isComplex
                     ? validateParameterResult

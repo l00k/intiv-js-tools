@@ -1,4 +1,4 @@
-import { isEmpty } from 'lodash-es';
+import { isEmpty } from 'lodash';
 import { Exception } from '../Exception';
 import { ValidatorRulesSymbol, ValidatableObject, ValidatableFunction } from './def';
 import validateJsExt from './validateJsExt';
@@ -53,7 +53,7 @@ export default class Validator
 
             // validate subojects
             if (object[property] instanceof Object) {
-                result.subObjects[property] = this.validateObject(object[property]);
+                (<any>result.subObjects)[property] = this.validateObject(object[property]);
                 if (!result.subObjects[property].valid) {
                     result.valid = false;
                 }
@@ -82,7 +82,7 @@ export default class Validator
             if (value instanceof Object) {
                 const validateResult = this.validateObject(value);
                 if (!validateResult.valid) {
-                    result.subObjects[parameterIdx] = validateResult;
+                    (<any>result.subObjects)[parameterIdx] = validateResult;
                 }
             }
 

@@ -13,6 +13,11 @@ class Configuration
 
     protected data : ConfigurationData = {};
 
+    public load(data : any)
+    {
+        this.createFlatData('', data);
+    }
+
     protected createFlatData(path : string, tree : any)
     {
         for (let idx in tree) {

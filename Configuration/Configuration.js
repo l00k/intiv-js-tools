@@ -1,16 +1,14 @@
 "use strict";
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
 Object.defineProperty(exports, "__esModule", { value: true });
+const tslib_1 = require("tslib");
 const Exception_1 = require("../Exception");
 const ObjectManager_1 = require("../ObjectManager");
 let Configuration = class Configuration {
     constructor() {
         this.data = {};
+    }
+    load(data) {
+        this.createFlatData('', data);
     }
     createFlatData(path, tree) {
         for (let idx in tree) {
@@ -33,7 +31,7 @@ let Configuration = class Configuration {
         return this.data[path];
     }
 };
-Configuration = __decorate([
+Configuration = tslib_1.__decorate([
     ObjectManager_1.Singleton()
 ], Configuration);
 exports.default = Configuration;

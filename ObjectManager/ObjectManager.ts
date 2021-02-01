@@ -18,9 +18,9 @@ export default class ObjectManager
      */
     public static get storage() : Storage
     {
-        const globalScope = window !== undefined
-            ? window
-            : global;
+        const globalScope = global !== undefined
+            ? global
+            : window;
 
         if (!globalScope[ObjectManagerSymbol]) {
             globalScope[ObjectManagerSymbol] = new Storage();
@@ -89,10 +89,10 @@ export default class ObjectManager
         injectionDescription : InjectionDescription
     )
     {
-        let targetInjections = this.storage.injections.get(Object);
+        let targetInjections = this.storage.injections.get(Target);
         if (!targetInjections) {
             targetInjections = {};
-            this.storage.injections.set(Object, targetInjections);
+            this.storage.injections.set(Target, targetInjections);
         }
 
         targetInjections[propertyName] = injectionDescription;
