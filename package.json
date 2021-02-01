@@ -4,7 +4,8 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "build": "NODE_PATH=src tsc"
+        "build": "tsc",
+        "test": "jest"
     },
     "repository": {
         "type": "git",
@@ -17,8 +18,11 @@
         "validate.js": "^0.13.1"
     },
     "devDependencies": {
+        "@types/jest": "^26.0.20",
         "@types/lodash-es": "^4.17.4",
         "@types/node": "^14.14.22",
+        "jest": "^26.6.3",
+        "ts-jest": "^26.5.0",
         "tsc-watch": "^4.2.9",
         "typescript": "^4.1.3"
     },
