@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ValidationException = exports.ErrorException = exports.RuntimeException = exports.InitiationException = exports.Exception = exports.Throwable = void 0;
+exports.ErrorException = exports.RuntimeException = exports.InitiationException = exports.Exception = exports.Throwable = void 0;
 class Throwable extends Error {
     constructor(message, code, error) {
         super(message);
@@ -70,13 +70,3 @@ class ErrorException extends Throwable {
     }
 }
 exports.ErrorException = ErrorException;
-class ValidationException extends ErrorException {
-    constructor(message, code, details) {
-        super(message, code);
-        this.name = 'ValidationException';
-        this.code = 1584917649257;
-        this.details = {};
-        this.details = details || this.details;
-    }
-}
-exports.ValidationException = ValidationException;
