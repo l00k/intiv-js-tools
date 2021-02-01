@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const InitializerList_1 = require("../InitializerList");
+const Initializable_1 = require("../Initializable");
 class ValidationResult {
     constructor() {
         this.valid = true;
@@ -10,4 +10,4 @@ class ValidationResult {
         this.returnType = true;
     }
 }
-exports.default = InitializerList_1.Initializable(ValidationResult);
+exports.default = Initializable_1.Initializable(ValidationResult);
