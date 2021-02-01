@@ -1,4 +1,4 @@
-import { Initializable } from '../InitializerList';
+import { Initializable } from '../Initializable';
 import { ValidationError } from './def';
 
 

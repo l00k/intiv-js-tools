@@ -5,8 +5,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 
-const def_1 = require("./def");
-const PropertyDescriptor_1 = __importDefault(require("./PropertyDescriptor"));
+const def = require("./def");
+const PropertyDescriptor = __importDefault(require("./PropertyDescriptor"));
 
 function Initializable(Source) {
     const Extended = function (...args) {
@@ -22,8 +22,8 @@ function Initializable(Source) {
             return;
         }
         const Target = Object.getPrototypeOf(this);
-        const mapping = Target[def_1.PropertySymbol] || {};
-        const properties = Target[def_1.PropertySymbol] || {};
+        const mapping = Target[def.PropertySymbol] || {};
+        const properties = Target[def.PropertySymbol] || {};
         Object.entries(data)
             .forEach(([fieldName, rawValue]) => {
             const property = mapping[fieldName]
@@ -31,7 +31,7 @@ function Initializable(Source) {
                 : fieldName;
             let propertyDsrp = properties[property];
             if (!propertyDsrp) {
-                propertyDsrp = new PropertyDescriptor_1.default({ preserveRaw: true });
+                propertyDsrp = new PropertyDescriptor.default({ preserveRaw: true });
             }
             // population blocked
             if (!propertyDsrp.populate) {

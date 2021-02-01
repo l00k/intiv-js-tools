@@ -1,4 +1,4 @@
-import { Property, Initializable } from '../../../InitializerList';
+import { Property, Initializable } from '../../../Initializable';
 import Company from './Company';
 
 
