@@ -3,7 +3,7 @@ import { ObjectManager, Singleton } from '../ObjectManager';
 import Observer from './Observer';
 
 
-type Callback = (data : any, previousResult : any) => any;
+type Callback = (data : any) => any;
 
 type Listners = {
     [eventName : string] : Callback[]
@@ -33,19 +33,16 @@ class EventBus
         this.listeners[eventName].push(observer[method].bind(observer));
     }
 
-    public async handle(eventName : string, data : any)
+    public async emit(eventName : string, data? : any)
     {
         if (isEmpty(this.listeners[eventName])) {
             return null;
         }
 
-        let previousResult = null;
         for (let idx in this.listeners[eventName]) {
             const callback = this.listeners[eventName][idx];
-            previousResult = await callback(data, previousResult);
+            await callback(data);
         }
-
-        return previousResult;
     }
 
 }

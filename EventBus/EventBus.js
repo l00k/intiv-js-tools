@@ -19,16 +19,14 @@ let EventBus = class EventBus {
         }
         this.listeners[eventName].push(observer[method].bind(observer));
     }
-    async handle(eventName, data) {
+    async emit(eventName, data) {
         if (lodash_1.isEmpty(this.listeners[eventName])) {
             return null;
         }
-        let previousResult = null;
         for (let idx in this.listeners[eventName]) {
             const callback = this.listeners[eventName][idx];
-            previousResult = await callback(data, previousResult);
+            await callback(data);
         }
-        return previousResult;
     }
 };
 EventBus = tslib_1.__decorate([
