@@ -9,13 +9,8 @@ const def = require("./def");
 const PropertyDescriptor = __importDefault(require("./PropertyDescriptor"));
 
 function Initializable(Source) {
-    const Extended = function (...args) {
-        const object = new Source(...args);
-        if (args[0] instanceof Object) {
-            object.setData(args[0]);
-        }
-        return object;
-    };
+    const code = `(function ${Source.name}(...args) { const object = new Source(...args); if (args[0] instanceof Object) { object.setData(args[0]); } return object; })`;
+    const Extended = eval(code);
     Extended.prototype = Source.prototype;
     Extended.prototype.setData = function (data) {
         if (!data) {

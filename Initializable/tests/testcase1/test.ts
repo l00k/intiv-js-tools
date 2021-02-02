@@ -1,3 +1,4 @@
+import ValidationResult from '../../../Validator/ValidationResult';
 import Author from './Author';
 
 
