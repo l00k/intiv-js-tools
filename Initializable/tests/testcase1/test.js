@@ -1,9 +1,7 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const Author_1 = __importDefault(require("./Author"));
+const tslib_1 = require("tslib");
+const Author_1 = tslib_1.__importDefault(require("./Author"));
 test('unchanged initial values', () => {
     const author = new Author_1.default();
     expect(author.name).toEqual('initial');

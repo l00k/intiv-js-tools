@@ -1,8 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const Initializable_1 = require("../Initializable");
-class ValidationResult {
+class ValidationResult extends Initializable_1.Initializable {
     constructor() {
+        super(...arguments);
         this.valid = true;
         this.properties = {};
         this.subObjects = {};
@@ -10,7 +11,4 @@ class ValidationResult {
         this.returnType = true;
     }
 }
-class default_1 extends Initializable_1.Initializable(ValidationResult) {
-}
-exports.default = default_1;
-;
+exports.default = ValidationResult;

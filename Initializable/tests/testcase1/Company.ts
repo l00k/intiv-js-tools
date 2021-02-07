@@ -1,7 +1,8 @@
 import { Initializable } from '../../../Initializable';
 
 
-class Company
+export default class Company
+    extends Initializable<Company>
 {
 
     public name : string;
@@ -9,6 +10,3 @@ class Company
     public active : boolean;
 
 }
-
-
-export default class extends Initializable(Company) {};

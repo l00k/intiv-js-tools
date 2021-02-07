@@ -15,7 +15,8 @@ type ParameterErrorMap = {
 }
 
 
-class ValidationResult
+export default class ValidationResult
+    extends Initializable<ValidationResult>
 {
 
     public valid : boolean = true;
@@ -29,6 +30,3 @@ class ValidationResult
     public returnType : boolean = true;
 
 }
-
-
-export default class extends Initializable(ValidationResult) {};

@@ -1,8 +1,10 @@
-import { Property, Initializable } from '../../../Initializable';
+import { Property, Initializable, Initialize } from '../../../Initializable';
 import Company from './Company';
 
 
-class Author
+@Initialize()
+export default class Author
+    extends Initializable<Author>
 {
 
     public name : string = 'initial';
@@ -13,5 +15,3 @@ class Author
     public company : Company;
 
 }
-
-export default Initializable(Author);
