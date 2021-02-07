@@ -40,7 +40,6 @@ class Initializable {
                     this[property] = +rawValue;
                 }
                 else {
-                    console.log(property, rawValue);
                     this[property] = rawValue;
                 }
             }
