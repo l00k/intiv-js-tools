@@ -100,10 +100,20 @@ export default class ObjectManager
 
     public static loadDependencies<T>(
         object : T,
-        Type? : ClassConstructor<T>
+        Type : ClassConstructor<T>
     )
     {
-        const targetInjections = this.storage.injections.get(Type);
+        let targetInjections = {};
+        do {
+            targetInjections = {
+                ...targetInjections,
+                ...this.storage.injections.get(Type)
+            };
+
+            Type = Object.getPrototypeOf(Type);
+        }
+        while(Type !== Object.prototype)
+
         if (!targetInjections) {
             return;
         }
