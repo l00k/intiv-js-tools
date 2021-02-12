@@ -11,7 +11,7 @@ type Listners = {
 
 
 @Singleton()
-class EventBus
+export default class EventBus
 {
 
     protected observers : Map<typeof Observer, Observer> = new Map();
@@ -40,16 +40,12 @@ class EventBus
     public async emit(eventName : string, data? : any)
     {
         if (isEmpty(this.listeners[eventName])) {
-            return null;
+            return;
         }
 
-        for (let idx in this.listeners[eventName]) {
-            const callback = this.listeners[eventName][idx];
+        for (const callback of this.listeners[eventName]) {
             await callback(data);
         }
     }
 
 }
-
-
-export default EventBus;

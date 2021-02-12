@@ -24,10 +24,9 @@ let EventBus = class EventBus {
     }
     async emit(eventName, data) {
         if (lodash_1.isEmpty(this.listeners[eventName])) {
-            return null;
+            return;
         }
-        for (let idx in this.listeners[eventName]) {
-            const callback = this.listeners[eventName][idx];
+        for (const callback of this.listeners[eventName]) {
             await callback(data);
         }
     }
