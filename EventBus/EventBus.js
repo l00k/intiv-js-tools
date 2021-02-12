@@ -8,16 +8,19 @@ let EventBus = class EventBus {
         this.observers = new Map();
         this.listeners = {};
     }
-    on(eventName, observerClass, method) {
+    on(eventName, callee, observerClass) {
         if (lodash_1.isEmpty(this.listeners[eventName])) {
             this.listeners[eventName] = [];
         }
-        let observer = this.observers.get(observerClass);
-        if (!observer) {
-            observer = ObjectManager_1.ObjectManager.getInstance(observerClass.constructor);
-            this.observers.set(observerClass, observer);
+        if (observerClass) {
+            let observer = this.observers.get(observerClass);
+            if (!observer) {
+                observer = ObjectManager_1.ObjectManager.getInstance(observerClass.constructor);
+                this.observers.set(observerClass, observer);
+            }
+            callee.bind(observer);
         }
-        this.listeners[eventName].push(observer[method].bind(observer));
+        this.listeners[eventName].push(callee);
     }
     async emit(eventName, data) {
         if (lodash_1.isEmpty(this.listeners[eventName])) {

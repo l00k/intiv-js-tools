@@ -9,7 +9,7 @@ function On<T extends Observer>(eventName : string)
 {
     return (Target : T, method : string, descriptor : PropertyDescriptor) => {
         let eventBus = <EventBus> ObjectManager.getInstance(EventBus);
-        eventBus.on(eventName, <any>Target, method);
+        eventBus.on(eventName, descriptor.value, <any>Target);
     };
 }
 

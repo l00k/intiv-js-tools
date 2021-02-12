@@ -18,19 +18,23 @@ class EventBus
 
     protected listeners : Listners = {};
 
-    public on(eventName : string, observerClass : typeof Observer, method : string)
+    public on(eventName : string, callee : Callback, observerClass? : typeof Observer)
     {
         if (isEmpty(this.listeners[eventName])) {
             this.listeners[eventName] = [];
         }
 
-        let observer = this.observers.get(observerClass);
-        if (!observer) {
-            observer = ObjectManager.getInstance(<any> observerClass.constructor);
-            this.observers.set(observerClass, observer);
+        if (observerClass) {
+            let observer = this.observers.get(observerClass);
+            if (!observer) {
+                observer = ObjectManager.getInstance(<any> observerClass.constructor);
+                this.observers.set(observerClass, observer);
+            }
+
+            callee.bind(observer);
         }
 
-        this.listeners[eventName].push(observer[method].bind(observer));
+        this.listeners[eventName].push(callee);
     }
 
     public async emit(eventName : string, data? : any)
