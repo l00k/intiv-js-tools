@@ -137,6 +137,7 @@ export default class ObjectManager
             if (instance[ReleaseSymbol]) {
                 instance[ReleaseSymbol]();
             }
+            delete this.storage.instances[instanceName];
         }
     }
 
