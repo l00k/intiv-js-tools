@@ -88,6 +88,7 @@ class ObjectManager {
             if (instance[exports.ReleaseSymbol]) {
                 instance[exports.ReleaseSymbol]();
             }
+            delete this.storage.instances[instanceName];
         }
     }
 }
