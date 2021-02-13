@@ -130,12 +130,12 @@ export default class ObjectManager
         }
     }
 
-    public static releaseAll()
+    public static async releaseAll()
     {
         for (const instanceName in this.storage.instances) {
             const instance = this.storage.instances[instanceName];
             if (instance[ReleaseSymbol]) {
-                instance[ReleaseSymbol]();
+                await instance[ReleaseSymbol]();
             }
             delete this.storage.instances[instanceName];
         }
