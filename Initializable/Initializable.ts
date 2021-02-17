@@ -1,15 +1,21 @@
-import { Mapping, Properties, PropertySymbol, MappingSymbol } from './def';
+import { Mapping, Properties, PropertySymbol, MappingSymbol, ClassConstructor } from './def';
 import PropertyDescriptor from './PropertyDescriptor';
 
+type RecursivePartial<T> = {
+  [P in keyof T]?:
+    T[P] extends (infer U)[] ? RecursivePartial<U>[] :
+    T[P] extends object ? RecursivePartial<T[P]> :
+    T[P];
+};
 
 export default class Initializable<T>
 {
 
-    public constructor(data? : Partial<T>)
+    public constructor(data? : RecursivePartial<T>)
     {
     }
 
-    public setData(data? : Partial<T>)
+    public setData(data? : RecursivePartial<T>)
     {
         if (!data) {
             return;
@@ -59,22 +65,33 @@ export default class Initializable<T>
 
                         if (rawValue instanceof Array) {
                             rawValue.forEach((elm) => {
-                                let subElm = new propertyDsrp.arrayOf(elm);
+                                let subElm = this._setDataSubObject(propertyDsrp.arrayOf, elm);
                                 this[property].push(subElm);
                             });
                         }
                         else if (typeof rawValue == 'object') {
                             Object.keys(rawValue).forEach((idx) => {
-                                let subElm = new propertyDsrp.arrayOf(rawValue[idx]);
+                                let subElm = this._setDataSubObject(propertyDsrp.arrayOf, rawValue[idx]);
                                 this[property].push(subElm);
                             });
                         }
                     }
                     else {
-                        this[property] = new propertyDsrp.type(rawValue);
+                        this[property] = this._setDataSubObject(propertyDsrp.type, rawValue);
                     }
                 }
             });
     }
 
+    protected _setDataSubObject(type : ClassConstructor, rawValue : Object)
+    {
+        if (type.prototype instanceof Initializable) {
+            const object : Initializable<any> = <any> new type();
+            object.setData(rawValue);
+            return object;
+        }
+        else {
+            return new type(rawValue)
+        }
+    }
 }

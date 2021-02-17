@@ -1,6 +1,8 @@
 import PropertyDescriptor from './PropertyDescriptor';
 
 
+export type ClassConstructor<T = {}> = new (...args : any[]) => T;
+
 export const PropertySymbol = Symbol('Property');
 
 export const MappingSymbol = Symbol('Mapping');

@@ -1,5 +1,3 @@
-export const SingletonSymbol = Symbol('Singleton');
-
 export type ClassConstructor<T> = {
     new(...args : any[]) : T,
     [index : string] : any,

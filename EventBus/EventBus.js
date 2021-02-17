@@ -1,9 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const tslib_1 = require("tslib");
 const lodash_1 = require("lodash");
 const ObjectManager_1 = require("../ObjectManager");
-let EventBus = class EventBus {
+class EventBus {
     constructor() {
         this.observers = new Map();
         this.listeners = {};
@@ -30,8 +29,5 @@ let EventBus = class EventBus {
             await callback(data);
         }
     }
-};
-EventBus = tslib_1.__decorate([
-    ObjectManager_1.Singleton()
-], EventBus);
+}
 exports.default = EventBus;

@@ -1,4 +1,4 @@
-import { InjectionDescription, SingletonSymbol, ClassConstructor } from './def';
+import { InjectionDescription, ClassConstructor } from './def';
 import Storage from './Storage';
 
 
@@ -34,15 +34,11 @@ export default class ObjectManager
         ctorArgs : any[] = []
     ) : T
     {
-        if ((<any>Klass)[SingletonSymbol]) {
-            if (!this.storage.instances[Klass.name]) {
-                this.storage.instances[Klass.name] = this.createInstance(Klass, ctorArgs);
-            }
-
-            return this.storage.instances[Klass.name];
+        if (!this.storage.instances[Klass.name]) {
+            this.storage.instances[Klass.name] = this.createInstance(Klass, ctorArgs);
         }
 
-        return this.createInstance(Klass, ctorArgs);
+        return this.storage.instances[Klass.name];
     }
 
     public static bindInstance(object : any) : void

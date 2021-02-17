@@ -1,9 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const tslib_1 = require("tslib");
 const Exception_1 = require("../Exception");
-const ObjectManager_1 = require("../ObjectManager");
-let Configuration = class Configuration {
+class Configuration {
     constructor() {
         this.data = {};
     }
@@ -30,8 +28,5 @@ let Configuration = class Configuration {
         }
         return this.data[path];
     }
-};
-Configuration = tslib_1.__decorate([
-    ObjectManager_1.Singleton()
-], Configuration);
+}
 exports.default = Configuration;

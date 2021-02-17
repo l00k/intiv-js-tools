@@ -1,6 +1,7 @@
-type ObjectType = Object & Function;
+import { ClassConstructor } from './def';
 
-export type ClassConstructor<T = {}> = new (...args : any[]) => T;
+
+type ObjectType = Object & Function;
 
 export default class PropertyDescriptor
 {

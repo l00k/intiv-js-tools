@@ -2,7 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ReleaseSymbol = exports.ObjectManagerSymbol = void 0;
 const tslib_1 = require("tslib");
-const def_1 = require("./def");
 const Storage_1 = tslib_1.__importDefault(require("./Storage"));
 exports.ObjectManagerSymbol = Symbol('ObjectManager');
 // service release symbol
@@ -21,13 +20,10 @@ class ObjectManager {
         return globalScope[exports.ObjectManagerSymbol];
     }
     static getInstance(Klass, ctorArgs = []) {
-        if (Klass[def_1.SingletonSymbol]) {
-            if (!this.storage.instances[Klass.name]) {
-                this.storage.instances[Klass.name] = this.createInstance(Klass, ctorArgs);
-            }
-            return this.storage.instances[Klass.name];
+        if (!this.storage.instances[Klass.name]) {
+            this.storage.instances[Klass.name] = this.createInstance(Klass, ctorArgs);
         }
-        return this.createInstance(Klass, ctorArgs);
+        return this.storage.instances[Klass.name];
     }
     static bindInstance(object) {
         if (this.storage.instances[object.name]) {

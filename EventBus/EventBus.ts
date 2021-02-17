@@ -1,5 +1,5 @@
 import { isEmpty } from 'lodash';
-import { ObjectManager, Singleton } from '../ObjectManager';
+import { ObjectManager } from '../ObjectManager';
 import Observer from './Observer';
 
 
@@ -10,7 +10,6 @@ type Listners = {
 };
 
 
-@Singleton()
 export default class EventBus
 {
 

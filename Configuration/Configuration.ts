@@ -1,5 +1,4 @@
 import { Exception } from '../Exception';
-import { Singleton } from '../ObjectManager';
 
 
 type ConfigurationData = {
@@ -7,7 +6,6 @@ type ConfigurationData = {
 };
 
 
-@Singleton()
 class Configuration
 {
 

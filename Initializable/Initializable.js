@@ -48,22 +48,32 @@ class Initializable {
                     this[property] = [];
                     if (rawValue instanceof Array) {
                         rawValue.forEach((elm) => {
-                            let subElm = new propertyDsrp.arrayOf(elm);
+                            let subElm = this._setDataSubObject(propertyDsrp.arrayOf, elm);
                             this[property].push(subElm);
                         });
                     }
                     else if (typeof rawValue == 'object') {
                         Object.keys(rawValue).forEach((idx) => {
-                            let subElm = new propertyDsrp.arrayOf(rawValue[idx]);
+                            let subElm = this._setDataSubObject(propertyDsrp.arrayOf, rawValue[idx]);
                             this[property].push(subElm);
                         });
                     }
                 }
                 else {
-                    this[property] = new propertyDsrp.type(rawValue);
+                    this[property] = this._setDataSubObject(propertyDsrp.type, rawValue);
                 }
             }
         });
+    }
+    _setDataSubObject(type, rawValue) {
+        if (type.prototype instanceof Initializable) {
+            const object = new type();
+            object.setData(rawValue);
+            return object;
+        }
+        else {
+            return new type(rawValue);
+        }
     }
 }
 exports.default = Initializable;
