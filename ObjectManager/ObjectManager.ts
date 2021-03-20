@@ -1,4 +1,4 @@
-import { InjectionDescription, ClassConstructor } from './def';
+import { InjectionDescription, ClassConstructor, InjectOptions, InjectableOptions } from './def';
 import Storage from './Storage';
 
 
@@ -29,13 +29,10 @@ export default class ObjectManager
         return globalScope[ObjectManagerSymbol];
     }
 
-    public static getInstance<T>(
-        Klass : ClassConstructor<T>,
-        ctorArgs : any[] = []
-    ) : T
+    public static getInstance<T>(Klass : ClassConstructor<T>) : T
     {
         if (!this.storage.instances[Klass.name]) {
-            this.storage.instances[Klass.name] = this.createInstance(Klass, ctorArgs);
+            this.storage.instances[Klass.name] = this.createInstance(Klass);
         }
 
         return this.storage.instances[Klass.name];
@@ -59,6 +56,17 @@ export default class ObjectManager
         return this.storage.instances[name];
     }
 
+    public static getServicesByTag<T>(tag : string) : T[]
+    {
+        const services = [];
+
+        if (this.storage.servicesByTag[tag]) {
+            this.storage.servicesByTag[tag].forEach(serviceName => this.getService(serviceName));
+        }
+
+        return services;
+    }
+
     public static bindService(service : any, name : string) : void
     {
         if (this.storage.instances[name]) {
@@ -68,12 +76,9 @@ export default class ObjectManager
         this.storage.instances[name] = service;
     }
 
-    protected static createInstance<T>(
-        Klass : any,
-        ctorArgs : any[] = []
-    ) : T
+    protected static createInstance<T>(Klass : any) : T
     {
-        const object = new Klass(...ctorArgs);
+        const object = new Klass();
         this.loadDependencies(object, Klass.prototype);
 
         return object;
@@ -92,6 +97,26 @@ export default class ObjectManager
         }
 
         targetInjections[propertyName] = injectionDescription;
+    }
+
+    public static registerInjectable(
+        Target : Object,
+        injectableOptions : InjectableOptions
+    )
+    {
+        if (injectableOptions.instantiate) {
+            const instance = this.createInstance(Target);
+            this.bindService(instance, injectableOptions.name);
+        }
+
+        if (injectableOptions.tags) {
+            injectableOptions.tags.forEach(tag => {
+                if (!this.storage.servicesByTag[tag]) {
+                    this.storage.servicesByTag[tag] = [];
+                }
+                this.storage.servicesByTag[tag].push( injectableOptions.name);
+            });
+        }
     }
 
     public static loadDependencies<T>(
@@ -115,13 +140,16 @@ export default class ObjectManager
         }
 
         for (const propertyName in targetInjections) {
-            const injection = targetInjections[propertyName];
+            const injection : InjectionDescription = targetInjections[propertyName];
 
             if (injection.name) {
                 object[propertyName] = this.getService(injection.name);
             }
+            else if (injection.options.tag) {
+                object[propertyName] = this.getServicesByTag(injection.options.tag);
+            }
             else {
-                object[propertyName] = this.getInstance(injection.type, injection.ctorArgs);
+                object[propertyName] = this.getInstance(injection.type);
             }
         }
     }

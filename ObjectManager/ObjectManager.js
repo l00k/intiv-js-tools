@@ -19,9 +19,9 @@ class ObjectManager {
         }
         return globalScope[exports.ObjectManagerSymbol];
     }
-    static getInstance(Klass, ctorArgs = []) {
+    static getInstance(Klass) {
         if (!this.storage.instances[Klass.name]) {
-            this.storage.instances[Klass.name] = this.createInstance(Klass, ctorArgs);
+            this.storage.instances[Klass.name] = this.createInstance(Klass);
         }
         return this.storage.instances[Klass.name];
     }
@@ -37,14 +37,21 @@ class ObjectManager {
         }
         return this.storage.instances[name];
     }
+    static getServicesByTag(tag) {
+        const services = [];
+        if (this.storage.servicesByTag[tag]) {
+            this.storage.servicesByTag[tag].forEach(serviceName => this.getService(serviceName));
+        }
+        return services;
+    }
     static bindService(service, name) {
         if (this.storage.instances[name]) {
             throw new Error(`Instance named as ${name} already has been bonded`);
         }
         this.storage.instances[name] = service;
     }
-    static createInstance(Klass, ctorArgs = []) {
-        const object = new Klass(...ctorArgs);
+    static createInstance(Klass) {
+        const object = new Klass();
         this.loadDependencies(object, Klass.prototype);
         return object;
     }
@@ -55,6 +62,20 @@ class ObjectManager {
             this.storage.injections.set(Target, targetInjections);
         }
         targetInjections[propertyName] = injectionDescription;
+    }
+    static registerInjectable(Target, injectableOptions) {
+        if (injectableOptions.instantiate) {
+            const instance = this.createInstance(Target);
+            this.bindService(instance, injectableOptions.name);
+        }
+        if (injectableOptions.tags) {
+            injectableOptions.tags.forEach(tag => {
+                if (!this.storage.servicesByTag[tag]) {
+                    this.storage.servicesByTag[tag] = [];
+                }
+                this.storage.servicesByTag[tag].push(injectableOptions.name);
+            });
+        }
     }
     static loadDependencies(object, Type) {
         let targetInjections = {};
@@ -73,8 +94,11 @@ class ObjectManager {
             if (injection.name) {
                 object[propertyName] = this.getService(injection.name);
             }
+            else if (injection.options.tag) {
+                object[propertyName] = this.getServicesByTag(injection.options.tag);
+            }
             else {
-                object[propertyName] = this.getInstance(injection.type, injection.ctorArgs);
+                object[propertyName] = this.getInstance(injection.type);
             }
         }
     }

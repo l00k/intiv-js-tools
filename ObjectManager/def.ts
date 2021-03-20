@@ -3,6 +3,18 @@ export type ClassConstructor<T> = {
     [index : string] : any,
 };
 
+export type InjectableOptions = {
+
+    instantiate : boolean,
+    name? : string,
+    tags? : string[],
+
+};
+
+export type InjectOptions = {
+    tag? : string,
+};
+
 
 export class InjectionDescription
 {
@@ -10,8 +22,8 @@ export class InjectionDescription
     public constructor(
         public type : ClassConstructor<any>,
         public name? : string,
-        public ctorArgs? : any[],
+        public options? : InjectOptions,
     )
-    {
-    }
+    {}
+
 }
