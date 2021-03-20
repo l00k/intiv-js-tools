@@ -4,11 +4,8 @@ export type ClassConstructor<T> = {
 };
 
 export type InjectableOptions = {
-
-    instantiate : boolean,
-    name? : string,
-    tags? : string[],
-
+    tag? : string,
+    key? : string,
 };
 
 export type InjectOptions = {

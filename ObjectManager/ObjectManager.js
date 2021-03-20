@@ -38,11 +38,7 @@ class ObjectManager {
         return this.storage.instances[name];
     }
     static getServicesByTag(tag) {
-        const services = [];
-        if (this.storage.servicesByTag[tag]) {
-            this.storage.servicesByTag[tag].forEach(serviceName => this.getService(serviceName));
-        }
-        return services;
+        return this.storage.taggable[tag];
     }
     static bindService(service, name) {
         if (this.storage.instances[name]) {
@@ -64,17 +60,12 @@ class ObjectManager {
         targetInjections[propertyName] = injectionDescription;
     }
     static registerInjectable(Target, injectableOptions) {
-        if (injectableOptions.instantiate) {
-            const instance = this.createInstance(Target);
-            this.bindService(instance, injectableOptions.name);
-        }
-        if (injectableOptions.tags) {
-            injectableOptions.tags.forEach(tag => {
-                if (!this.storage.servicesByTag[tag]) {
-                    this.storage.servicesByTag[tag] = [];
-                }
-                this.storage.servicesByTag[tag].push(injectableOptions.name);
-            });
+        const instance = this.createInstance(Target);
+        if (injectableOptions.tag) {
+            if (!this.storage.taggable[injectableOptions.tag]) {
+                this.storage.taggable[injectableOptions.tag] = {};
+            }
+            this.storage.taggable[injectableOptions.tag][injectableOptions.key] = instance;
         }
     }
     static loadDependencies(object, Type) {

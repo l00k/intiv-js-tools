@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 class Storage {
     constructor() {
         this.instances = {};
-        this.servicesByTag = {};
+        this.taggable = {};
         this.injections = new Map();
     }
 }
