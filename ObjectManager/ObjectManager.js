@@ -91,8 +91,8 @@ class ObjectManager {
         }
         for (const propertyName in targetInjections) {
             const injection = targetInjections[propertyName];
-            if (injection.name) {
-                object[propertyName] = this.getService(injection.name);
+            if (injection.options.name) {
+                object[propertyName] = this.getService(injection.options.name);
             }
             else if (injection.options.tag) {
                 object[propertyName] = this.getServicesByTag(injection.options.tag);

@@ -12,6 +12,7 @@ export type InjectableOptions = {
 };
 
 export type InjectOptions = {
+    name? : string,
     tag? : string,
 };
 
@@ -21,7 +22,6 @@ export class InjectionDescription
 
     public constructor(
         public type : ClassConstructor<any>,
-        public name? : string,
         public options? : InjectOptions,
     )
     {}
