@@ -132,11 +132,11 @@ export default class ObjectManager
         for (const propertyName in targetInjections) {
             const injection : InjectionDescription = targetInjections[propertyName];
 
-            if (injection.options.name) {
-                object[propertyName] = this.getService(injection.options.name);
+            if (injection.name) {
+                object[propertyName] = this.getService(injection.name);
             }
-            else if (injection.options.tag) {
-                object[propertyName] = this.getServicesByTag(injection.options.tag);
+            else if (injection.tag) {
+                object[propertyName] = this.getServicesByTag(injection.tag);
             }
             else {
                 object[propertyName] = this.getInstance(injection.type);

@@ -8,19 +8,17 @@ export type InjectableOptions = {
     key? : string,
 };
 
-export type InjectOptions = {
-    name? : string,
-    tag? : string,
-};
-
-
 export class InjectionDescription
 {
 
+    public name? : string;
+    public tag? : string;
+
     public constructor(
         public type : ClassConstructor<any>,
-        public options? : InjectOptions,
     )
     {}
 
 }
+
+export type InjectOptions = Partial<InjectionDescription>;
