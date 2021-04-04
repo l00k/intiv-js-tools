@@ -8,7 +8,7 @@ class PropertyDescriptor {
         this.arrayOf = options.arrayOf ? options.arrayOf : this.arrayOf;
     }
     get isPrimitive() {
-        return [Boolean, null, undefined, Number, String, Symbol].indexOf(this.type) !== -1;
+        return [Boolean, null, undefined, Number, BigInt, String, Symbol].indexOf(this.type) !== -1;
     }
     get isArray() {
         return this.arrayOf !== undefined;

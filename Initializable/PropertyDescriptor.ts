@@ -22,7 +22,7 @@ export default class PropertyDescriptor
 
     public get isPrimitive() : boolean
     {
-        return [Boolean, null, undefined, Number, String, Symbol].indexOf(<any> this.type) !== -1;
+        return [Boolean, null, undefined, Number, BigInt, String, Symbol].indexOf(<any> this.type) !== -1;
     }
 
     public get isArray() : boolean
