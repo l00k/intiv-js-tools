@@ -39,6 +39,9 @@ class Initializable {
                 else if (propertyDsrp.type === Number) {
                     this[property] = +rawValue;
                 }
+                else if (propertyDsrp.type === BigInt) {
+                    this[property] = BigInt(rawValue);
+                }
                 else {
                     this[property] = rawValue;
                 }

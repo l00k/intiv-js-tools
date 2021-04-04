@@ -55,6 +55,9 @@ export default class Initializable<T>
                     else if (propertyDsrp.type === Number) {
                         this[property] = +rawValue;
                     }
+                    else if (<any>propertyDsrp.type === BigInt) {
+                        this[property] = BigInt(rawValue);
+                    }
                     else {
                         this[property] = rawValue;
                     }
