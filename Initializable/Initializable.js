@@ -26,50 +26,62 @@ class Initializable {
             if (!propertyDsrp.populate) {
                 return;
             }
-            if (rawValue === null) {
-                this[property] = null;
+            if (rawValue === undefined || rawValue === null) {
+                this[property] = rawValue;
             }
             else if (propertyDsrp.preserveRaw) {
                 this[property] = rawValue;
             }
             else if (propertyDsrp.isPrimitive) {
-                if (propertyDsrp.type === Boolean) {
-                    this[property] = !!rawValue;
+                this[property] = this._parseRawValue(propertyDsrp, rawValue);
+            }
+            else if (propertyDsrp.isArray) {
+                this[property] = [];
+                if (rawValue instanceof Array) {
+                    rawValue.forEach((elm) => {
+                        const subElm = this._parseRawValue(propertyDsrp, elm);
+                        this[property].push(subElm);
+                    });
                 }
-                else if (propertyDsrp.type === Number) {
-                    this[property] = +rawValue;
-                }
-                else if (propertyDsrp.type === BigInt) {
-                    this[property] = BigInt(rawValue);
-                }
-                else {
-                    this[property] = rawValue;
+                else if (typeof rawValue == 'object') {
+                    Object.keys(rawValue)
+                        .forEach((idx) => {
+                        const subElm = this._parseRawValue(propertyDsrp, rawValue[idx]);
+                        this[property].push(subElm);
+                    });
                 }
             }
             else {
-                if (propertyDsrp.isArray) {
-                    this[property] = [];
-                    if (rawValue instanceof Array) {
-                        rawValue.forEach((elm) => {
-                            let subElm = this._setDataSubObject(propertyDsrp.arrayOf, elm);
-                            this[property].push(subElm);
-                        });
-                    }
-                    else if (typeof rawValue == 'object') {
-                        Object.keys(rawValue).forEach((idx) => {
-                            let subElm = this._setDataSubObject(propertyDsrp.arrayOf, rawValue[idx]);
-                            this[property].push(subElm);
-                        });
-                    }
-                }
-                else {
-                    this[property] = this._setDataSubObject(propertyDsrp.type, rawValue);
-                }
+                this[property] = this._parseRawValue(propertyDsrp, rawValue);
             }
         });
     }
-    _setDataSubObject(type, rawValue) {
-        if (type.prototype instanceof Initializable) {
+    _parseRawValue(propertyDsrp, rawValue) {
+        const type = propertyDsrp.arrayOf || propertyDsrp.type;
+        if (rawValue === undefined || rawValue === null) {
+            return rawValue;
+        }
+        else if (!type) {
+            return rawValue;
+        }
+        else if (rawValue instanceof type) {
+            return rawValue;
+        }
+        else if (type === Boolean) {
+            return !!rawValue;
+        }
+        else if (type === Number) {
+            return +rawValue;
+        }
+        else if (type === BigInt) {
+            return BigInt(rawValue);
+        }
+        else if (type === String) {
+            return typeof rawValue.toString == 'function'
+                ? rawValue.toString()
+                : '' + rawValue;
+        }
+        else if (type.prototype instanceof Initializable) {
             const object = new type();
             object.setData(rawValue);
             return object;
